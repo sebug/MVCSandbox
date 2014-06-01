@@ -3,11 +3,30 @@
 <head>
 <title>Hello</title>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
+<script>
+$(document).ready(function () {
+  'use strict';
+  var vm = {
+    todoItems: ko.observableArray([])
+  };
+  $.get("/Todo/Get").then(function (data) {
+    if (data) {
+      vm.todoItems.push(data);
+    }
+  });
+
+  ko.applyBindings(vm);
+});
+</script>
 </head>
 <body>
 @{
   string msg = "Hallo";
 }
 <h1>@msg from Razor</h1>
+<div data-bind="foreach: todoItems">
+<p><input type=checkbox /> <label data-bind="text: Description"></label></p>
+</div>
 </body>
 </html>
